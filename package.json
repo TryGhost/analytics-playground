@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "app.js",
   "scripts": {
-    "dev": "echo \"Implement me!\"",
+    "dev": "node app.js",
     "test:unit": "NODE_ENV=testing c8 --all --check-coverage --100  --reporter text --reporter cobertura mocha './test/**/*.test.js'",
     "test": "yarn test:unit",
     "lint:code": "eslint *.js lib/ --ext .js --cache",
@@ -25,5 +25,7 @@
     "mocha": "11.1.0",
     "sinon": "19.0.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "express": "^4.21.2"
+  }
 }
