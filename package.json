@@ -6,7 +6,8 @@
   "license": "MIT",
   "main": "app.js",
   "scripts": {
-    "dev": "node app.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test:unit": "NODE_ENV=testing c8 --all --check-coverage --100  --reporter text --reporter cobertura mocha './test/**/*.test.js'",
     "test": "yarn test:unit",
     "lint:code": "eslint *.js lib/ --ext .js --cache",
@@ -23,6 +24,7 @@
     "eslint": "9.19.0",
     "eslint-plugin-ghost": "3.4.0",
     "mocha": "11.1.0",
+    "nodemon": "^3.1.9",
     "sinon": "19.0.2"
   },
   "dependencies": {

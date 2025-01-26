@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      args:
+        NODE_ENV: development
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules # Prevent overwriting node_modules
+    environment:
+      - NODE_ENV=development
+    command: ["yarn", "dev"] # Adjust if your app has a different start script

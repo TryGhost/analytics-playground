@@ -6,7 +6,16 @@ WORKDIR /usr/src/app
 
 # Copy package files and install dependencies using Yarn
 COPY package.json yarn.lock ./
-RUN yarn install --production
+
+# Use a build argument to set NODE_ENV (default to production)
+ARG NODE_ENV=production
+ENV NODE_ENV=$NODE_ENV
+
+# Install dependencies based on the environment
+RUN if [ "$NODE_ENV" = "development" ]; \
+    then yarn install; \
+    else yarn install --production; \
+    fi
 
 # Copy the rest of the application files
 COPY . .
