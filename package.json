@@ -8,6 +8,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
+    "ch:client": "docker exec -it analytics-playground-clickhouse-1 clickhouse-client",
     "test:unit": "NODE_ENV=testing c8 --all --check-coverage --100  --reporter text --reporter cobertura mocha './test/**/*.test.js'",
     "test": "yarn test:unit",
     "lint:code": "eslint *.js lib/ --ext .js --cache",
@@ -28,6 +29,7 @@
     "sinon": "19.0.2"
   },
   "dependencies": {
+    "@clickhouse/client": "^1.10.1",
     "express": "^4.21.2"
   }
 }

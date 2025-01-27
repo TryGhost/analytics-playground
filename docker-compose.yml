@@ -12,4 +12,12 @@ services:
       - /usr/src/app/node_modules # Prevent overwriting node_modules
     environment:
       - NODE_ENV=development
-    command: ["yarn", "dev"] # Adjust if your app has a different start script
+    command: ["sh", "-c", "yarn install && yarn dev"] # Correct list format
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    ports:
+      - "8123:8123" # HTTP interface
+      - "9000:9000" # Native interface
+    volumes:
+      - ../clickhouse-data:/var/lib/clickhouse
