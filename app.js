@@ -5,17 +5,27 @@ const CLICKHOUSE_USERNAME = process.env.CLICKHOUSE_USERNAME || 'default';
 const CLICKHOUSE_PASSWORD = process.env.CLICKHOUSE_PASSWORD || '';
 const PORT = process.env.PORT || 8080;
 
-const express = require('express');
+import express from 'express';
 const app = express();
-const path = require('path');
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const { createClient } = require('@clickhouse/client');
+import { createClient } from '@clickhouse/client';
+import { migration } from 'clickhouse-migrations';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 const client = createClient({
     url: CLICKHOUSE_URL,
     username: CLICKHOUSE_USERNAME,
     password: CLICKHOUSE_PASSWORD,
-  })
+})
+
+
+// Migrate the database first
+await migration('migrations', CLICKHOUSE_URL, CLICKHOUSE_USERNAME, CLICKHOUSE_PASSWORD, 'default');
 
 
 // Middleware to log route visits

@@ -13,6 +13,8 @@ services:
     environment:
       - NODE_ENV=development
     command: ["sh", "-c", "yarn install && yarn dev"] # Correct list format
+    depends_on:
+      - clickhouse
 
   clickhouse:
     image: clickhouse/clickhouse-server:latest
