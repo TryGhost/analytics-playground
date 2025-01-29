@@ -25,6 +25,8 @@ const client = createClient({
 
 // Migrate the database first
 await migration('migrations', CLICKHOUSE_URL, CLICKHOUSE_USERNAME, CLICKHOUSE_PASSWORD, 'default');
+
+
 // Backend routes, these are not logged to ClickHouse
 app.get('/health', (req, res) => {
     res.send('OK');
@@ -44,6 +46,26 @@ app.get('/api/all', async (req, res) => {
         res.status(500).send('Error fetching analytics data');
     }
 });
+
+app.get('/api/top-pages', async (req, res) => {
+    const rows = await client.query({
+        query: `SELECT url, COUNT(*) AS hits
+        FROM route_events
+        GROUP BY url
+        ORDER BY hits
+        DESC LIMIT 10`,
+        format: 'JSONEachRow',
+    });
+
+    const json = await rows.json();
+    res.json(json);
+});
+
+
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
+});
+
 
 // Everything after this is logged to ClickHouse
 
@@ -77,6 +99,11 @@ app.get('/', (req, res) => {
 // Add an about page
 app.get('/about', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'about.html'));
+});
+
+// Add a blog page
+app.get('/blog', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'blog.html'));
 });
 
 
