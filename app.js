@@ -71,7 +71,7 @@ app.get('/dashboard', (req, res) => {
 
 // Middleware to log route visits
 app.use(async (req, res, next) => {
-    if (req.path !== '/health' && req.path !== '/dashboard') { // Skip logging for health checks
+    if (req.path !== '/favicon.ico') { // Skip logging for favicon requests
         try {
             await client.insert({
                 table: 'route_events',
