@@ -23,10 +23,8 @@ const client = createClient({
     password: CLICKHOUSE_PASSWORD,
 })
 
-
 // Migrate the database first
 await migration('migrations', CLICKHOUSE_URL, CLICKHOUSE_USERNAME, CLICKHOUSE_PASSWORD, 'default');
-
 
 // Middleware to log route visits
 app.use(async (req, res, next) => {
@@ -36,8 +34,10 @@ app.use(async (req, res, next) => {
                 table: 'route_events',
                 values: [
                     {
-                        route: req.path,
+                        url: req.path,
                         user_agent: req.headers['user-agent'],
+                        referrer: req.headers['referrer'],
+                        ip_address: req.ip,
                     },
                 ],
                 format: 'JSONEachRow',
@@ -70,7 +70,6 @@ app.get('/dashboard', async (req, res) => {
           })
 
         const json = await rows.json();
-        console.log('Result: ', json);
         res.json(json);
     } catch (err) {
         console.error('Error querying ClickHouse:', err);
