@@ -5,6 +5,7 @@
   "author": "Ghost Foundation",
   "license": "MIT",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
