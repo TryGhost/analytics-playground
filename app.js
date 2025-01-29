@@ -25,6 +25,27 @@ const client = createClient({
 
 // Migrate the database first
 await migration('migrations', CLICKHOUSE_URL, CLICKHOUSE_USERNAME, CLICKHOUSE_PASSWORD, 'default');
+// Backend routes, these are not logged to ClickHouse
+app.get('/health', (req, res) => {
+    res.send('OK');
+});
+
+app.get('/api/all', async (req, res) => {
+    try {
+        const rows = await client.query({
+            query: 'SELECT * FROM route_events',
+            format: 'JSONEachRow',
+          })
+
+        const json = await rows.json();
+        res.json(json);
+    } catch (err) {
+        console.error('Error querying ClickHouse:', err);
+        res.status(500).send('Error fetching analytics data');
+    }
+});
+
+// Everything after this is logged to ClickHouse
 
 // Middleware to log route visits
 app.use(async (req, res, next) => {
@@ -58,24 +79,6 @@ app.get('/about', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'about.html'));
 });
 
-app.get('/health', (req, res) => {
-    res.send('OK');
-});
-
-app.get('/dashboard', async (req, res) => {
-    try {
-        const rows = await client.query({
-            query: 'SELECT * FROM route_events',
-            format: 'JSONEachRow',
-          })
-
-        const json = await rows.json();
-        res.json(json);
-    } catch (err) {
-        console.error('Error querying ClickHouse:', err);
-        res.status(500).send('Error fetching analytics data');
-    }
-});
 
 app.listen(PORT, () => {
     console.log(`App running on port ${PORT}`);
