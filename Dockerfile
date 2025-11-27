@@ -13,8 +13,8 @@ ENV NODE_ENV=$NODE_ENV
 
 # Install dependencies based on the environment
 RUN if [ "$NODE_ENV" = "development" ]; \
-    then yarn install; \
-    else yarn install --production; \
+    then yarn install --ignore-scripts; \
+    else yarn install --ignore-scripts --production; \
     fi
 
 # Copy the rest of the application files

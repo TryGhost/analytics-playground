@@ -12,7 +12,7 @@ services:
       - /usr/src/app/node_modules # Prevent overwriting node_modules
     environment:
       - NODE_ENV=development
-    command: ["sh", "-c", "yarn install && yarn dev"] # Correct list format
+    command: ["sh", "-c", "yarn install --ignore-scripts && yarn dev"] # Correct list format
     depends_on:
       - clickhouse
 
