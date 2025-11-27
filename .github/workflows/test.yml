@@ -19,5 +19,5 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - run: yarn
+      - run: yarn --ignore-scripts
       - run: yarn test
